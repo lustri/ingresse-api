@@ -76,7 +76,12 @@ class UserView(MethodView):
 			abort(404)
 		db.session.delete(user)
 		db.session.commit()
-		return true
+		return jsonify({user.id: {
+			'first_name': user.first_name,
+			'last_name': user.last_name,
+			'age': str(user.age),
+			'address': user.address,
+		}})
 
 user_view = UserView.as_view('user_view')
 app.add_url_rule(
