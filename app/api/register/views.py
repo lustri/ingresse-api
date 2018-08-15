@@ -6,6 +6,11 @@ from api.register.models import User
 
 register = Blueprint('register', __name__)
 
+@register.route('/')
+@register.route('/home')
+def home():
+    return "Welcome to the Register Home."
+
 class UserView(MethodView):
 
 	def get(self, id=None):
