@@ -1,4 +1,5 @@
 import unittest
+import json
 
 from flask import jsonify
 from flask_testing import TestCase
@@ -41,7 +42,31 @@ class TestApi(TestCase):
 		res_get = self.client().get('/users/1')
 		self.assertEqual(res_get.status_code,404)
 
+	def test_user_get_by_id(self):
+		res_post = self.client().post('/users/', data=self.user)
+		self.assertEqual(res_post.status_code, 200)
+		res_get = self.client().get('/users/1')
+		self.assertEqual(res_get.status_code, 200)
+		self.assertIn('Guilherme',str(res_get.data))
 
+	def test_user_get_all_users(self):
+		res_post = self.client().post('/users/', data=self.user)
+		self.assertEqual(res_post.status_code, 200)
+		res_get = self.client().get('/users/')
+		self.assertEqual(res_get.status_code, 200)
+		self.assertIn('Guilherme', str(res_get.data))
+
+	def test_user_edit(self):
+		res_post = self.client().post('/users/', data=self.user)
+		self.assertEqual(res_post.status_code, 200)
+		res_put = self.client().put('/users/1', 
+			data ={
+				"first_name" : "Lustri"
+			})
+		self.assertEqual(res_put.status_code,200)
+		res_get = self.client().get('/users/')
+		self.assertEqual(res_get.status_code, 200)
+		self.assertIn('Lustri', str(res_get.data))
 
 	def setUp(self):
 
