@@ -5,3 +5,4 @@ flask_testing
 psycopg2-binary
 gunicorn
 eventlet
+coverage

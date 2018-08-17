@@ -12,6 +12,3 @@ class User(db.Model):
 		self.last_name = last_name;
 		self.age = age;
 		self.address = address;
-
-	def __repr__(self):
-		return '<User %d>' % self.id
