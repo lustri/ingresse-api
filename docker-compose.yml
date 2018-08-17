@@ -1,18 +1,33 @@
 version: '3'
 services:
   postgres:
-    image: postgres:10
+    container_name: postgres
+    build:
+      context: postgres
+      dockerfile: Dockerfile
     env_file: .env
     ports:
       - "5432:5432"
-    restart: always
+    volumes:
+      - ./postgres:/var/lib/postgres/data
   app:
+      container_name: app
       build: 
         context: app
         dockerfile: Dockerfile
-      ports:
-        - 5000:5000
       depends_on:
         - postgres
-      entrypoint: ["python", "run.py"]
+      links:
+        - postgres
+      command: gunicorn --worker-class eventlet -w 4 -b 0.0.0.0:8000 manage:app
+  nginx:
+      container_name: nginx
+      build: ./nginx
+      ports:
+        - 80:80
       restart: always
+      depends_on:
+        - app
+
+volumes:
+  postgres:

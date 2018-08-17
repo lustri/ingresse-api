@@ -1,7 +1,7 @@
 import json
 from flask import request, jsonify, Blueprint, abort
 from flask.views import MethodView
-from api import db, app
+from api import db
 from api.register.models import User
 
 register = Blueprint('register', __name__)
@@ -84,9 +84,3 @@ class UserView(MethodView):
 		}})
 
 user_view = UserView.as_view('user_view')
-app.add_url_rule(
-	'/users/', view_func=user_view, methods=['GET','POST']
-)
-app.add_url_rule(
-	'/users/<int:id>', view_func=user_view, methods=['GET','PUT','DELETE']	
-)
